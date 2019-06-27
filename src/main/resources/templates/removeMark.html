@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>可追溯的大数据安全与共享</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name  = "viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 引入bootstrap的css样式文件-->
+    <link rel = "stylesheet" type="text/css" href="./css/bootstrap.min.css">
+
+    <!--引入图标样式-->
+    <link rel="stylesheet" type="text/css" href="./css/all.css">
+
+    <!--animate.css + wow.js-->
+    <link rel="stylesheet" type="text/css" href="./css/animate.css">
+
+    <!--引入自定义的css样式文件-->
+    <link rel = "stylesheet" type="text/css" href="./css/style.css">
+
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css" />
+    <link href="./css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <script src="./js/modernizr.js"></script> <!-- Modernizr -->
+    <script src="./js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/sweetalert.css">
+
+    <style>
+        /* Custom Styles */
+        ul.nav-tabs{
+            width: 140px;
+            margin-top: 20px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+        }
+        ul.nav-tabs li{
+            margin: 0;
+            border-top: 1px solid #ddd;
+        }
+        ul.nav-tabs li:first-child{
+            border-top: none;
+        }
+        ul.nav-tabs li a{
+            margin: 0;
+            padding: 8px 36px;
+            border-radius: 0;
+        }
+        ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover{
+            color: #fff;
+            background: #0088cc;
+            border: 1px solid #0088cc;
+        }
+        ul.nav-tabs li:first-child a{
+            border-radius: 4px 4px 0 0;
+        }
+        ul.nav-tabs li:last-child a{
+            border-radius: 0 0 4px 4px;
+        }
+        ul.nav-tabs.affix{
+            top: 30px; /* Set the top position of pinned element */
+        }
+    </style>
+</head>
+<body data-spy="scroll" data-target="#myScrollspy">
+<nav class="navbar navbar-expand-lg navbar-light  " style="height: 60px;padding-top: 25px">
+    <div class="container">
+
+        <a class="navbar-brand brand-style"><span style="color: white">可追溯的大数据安全与共享</span></a>
+
+        <button class="navbar-toggler menu-btn-style" type="button" data-toggle="collapse" data-target="#collapseMenu"
+                aria-controls="collapseMenu" aria-expanded="false" aria-label="Toggle Navigation">
+            <span class="navbar-toggler-icon menu-icon-style"></span>
+        </button>
+
+        <div class = "collapse navbar-collapse justify-content-end " id = "collapseMenu">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link menu-style  nav-text" href="originData">原始数据 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  menu-style" href="markProcess">添加水印<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-style" href="markData">共享数据 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active menu-style" href="removeMark">提取水印<span class="sr-only">(current)</span></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<hr>
+<div class="container" style="padding-top: 50px">
+    <div class="row">
+        <div class="col-lg-3" id="myScrollspy">
+            <ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="125">
+                <li class="active"><a href="#section-1">提取水印</a></li>
+                <li><a href="#section-2">水印处理</a></li>
+                <li><a href="#section-3">生成图片</a></li>
+                <li><a href="#section-4">水印追溯</a></li>
+
+            </ul>
+        </div>
+        <div class="col-lg-9">
+            <h2>
+                <span  class="" id="section-1" style="font-weight: bold">提取水印</span><br>
+            </h2>
+            <hr>
+
+            <p style="">
+            <div class="row" style="height: 42px!important;" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify;">子集比例： </span>
+                <input  id="ratioInput" type="number" step="0.1" max="1" min="0.1"  placeholder="例如1, 0.9, 0.8" class=" userInput col-lg-4"  style="color: #333333"/><br>
+                <button id = "pickMarkBtn" value="modify" class=" btn btn-primary btn-lg " style="margin-left:30px;font-size: 24px" >提取水印</button>
+            </div>
+            <br>
+
+            </p>
+            <hr style="margin-top: 80px;color: white!important;">
+
+            <h2 class="">
+                <span  class="" id="section-2" style="font-weight: bold">水印处理</span><br>
+            </h2>
+            <hr>
+
+            <p style="">
+            <div class="row" style="" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify">水印序列：</span>
+                <textarea id="markSeq" rows="16" readonly cols="76" onkeyup="this.value=this.value.replace(/[^\r\n0-9]/g,'');" style="font-size: 8px;color: #333333"></textarea>
+            </div>
+            <br>
+            <div class="col-lg-9" style="text-align:center">
+                <button id = "generatePicBinaryBtn" value="modify" class=" btn btn-primary btn-lg " style="margin-left: 50px;height: 52px;font-size: 24px;width: 410px">生成图片二值序列</button>
+            </div>
+            </p>
+
+            <hr style="margin-top: 80px;">
+            <h2 class="">
+                <span  class="" id="section-3" style="font-weight: bold">生成图片</span><br>
+            </h2>
+            <hr>
+            <p style="">
+            <div class="row" style="" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify">二值序列：</span>
+                <textarea id="picBinarySeq" readonly rows="16" cols="76" onkeyup="this.value=this.value.replace(/[^\r\n0-9]/g,'');" style="font-size: 9px;color: #333333"></textarea>
+            </div>
+            <br>
+            <div class=" col-lg-9" style="text-align:center;align-items: center">
+                <button id = "generatePicBtn" value="modify" class=" btn btn-primary btn-lg " style="margin-left: 50px;height: 52px;font-size: 24px;width: 410px">生成水印图片</button>
+            </div>
+            <br><br>
+            <div class="row col-lg-12" style="height: 42px!important;margin-top: 20px;" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify">水印图片：</span>
+                <img id = "markPic" style="width: 256px;height: 64px;">
+            </div>
+            </p>
+            <br/>
+
+            <hr style="margin-top: 80px;">
+            <h2 class="">
+                <span  class="" id="section-4" style="font-weight: bold">水印追溯</span><br>
+            </h2>
+            <hr>
+            <p style="">
+            <div class="row" style="height: 42px!important;" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify;">水印文字： </span>
+                <input  id="firmSignInput" type="text"  placeholder="请输入水印图片上的文字" class=" userInput col-lg-4"  style="color: #333333"/><br>
+                <button id = "searchBtn" value="modify" class=" btn btn-primary btn-lg " style="margin-left:30px;font-size: 24px" >查找记录</button>
+            </div>
+            <br>
+            <div class="row" style="height: 42px!important;" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify;">共享方名称： </span>
+                <span  id="firmNameInput" type="text"  placeholder="" readonly class=" userInput col-lg-6"  style="font-size:22px;color: whitesmoke"></span><br>
+            </div>
+            <br>
+            <div class="row" style="height: 42px!important;" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify;">数据名称： </span>
+                <span  id="dataNameInput" type="text"  placeholder="" readonly class=" userInput col-lg-6"  style="color: whitesmoke;font-size:22px;"></span><br>
+            </div>
+            <br>
+            <div class="row" style="height: 42px!important;" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify;">水印时间： </span>
+                <span  id="markTime" type="text"  placeholder="" readonly class=" userInput col-lg-6"  style="color: whitesmoke;font-size:22px;"></span><br>
+            </div>
+            <br>
+            <div class="row" style="height: 42px!important;" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify;">水印图片： </span>
+                <img id = "tracePic" style="width: 256px;height: 64px;">
+            </div>
+            </p>
+            <br/>
+
+            <br><br><br>
+            <hr>
+        </div>
+    </div>
+</div>
+<script>
+    let markSeq=[];
+    let picBinary=[];
+    function getMarkByAll() {
+        swal({
+            title: "提取水印中",
+            showConfirmButton: false,
+            imageUrl: "./img/loading.gif",
+            showCancelButton: false,
+            timer:150000
+        })
+
+        let dom = document.getElementById("markSeq")
+        dom.value = ""
+        $.ajax({
+            url:"http://localhost:8088/mark/pickMark",
+            type:"post",
+            success:function(res){
+                console.log(res)
+                if(res.status == 500){
+                    swal("错误","数据表B为空，请重试","error")
+                }
+                let s = ""
+                markSeq = res.markSeq;
+                if(res.code != 0)
+                {
+                    swal("错误","数据表B为空，请重试","error")
+                }
+                swal("成功","提取水印成功","success")
+
+                for (let i = 0; i < markSeq.length; i++) {
+                    s += markSeq[i]
+                    if((i+1)%64 == 0){
+                        s += "\n"
+                    }
+                }
+                dom.value = s;
+                // console.log(picBin)
+            },
+            fail:function(res){
+                if(res.status == 500){
+                    swal("错误","数据表B为空，请重试","error")
+                }
+                console.log(res)
+                swal("错误","提取水印失败，请重试","fail")
+            },
+            error:function (res) {
+                swal("错误","数据表B为空，请重试","error")
+
+            },
+        })
+    }
+
+    function getMarkByPart(p) {
+        swal({
+            title: "提取水印中",
+            showConfirmButton: false,
+            imageUrl: "./img/loading.gif",
+            showCancelButton: false,
+            timer:150000
+        })
+
+        let dom = document.getElementById("markSeq")
+        dom.value = ""
+        $.ajax({
+            url:"http://localhost:8088/mark/pickMarkByPart",
+            type:"post",
+            data:{
+                persent:p
+            },
+            success:function(res){
+                console.log(res)
+                if(res.status == 500){
+                    swal("错误","数据表B为空，请重试","error")
+                }
+                let s = ""
+                markSeq = res.markSeq;
+                if(res.code != 0)
+                {
+                    swal("错误","数据表B为空，请重试","fail")
+                }
+                swal("成功","提取水印成功","success")
+
+                for (let i = 0; i < markSeq.length; i++) {
+                    s += markSeq[i]
+                    if((i+1)%64 == 0){
+                        s += "\n"
+                    }
+                }
+                dom.value = s;
+                console.log(p)
+                // console.log(picBin)
+            },
+            fail:function (res) {
+                if(res.status == 500){
+                    swal("错误","数据表B为空，请重试","error")
+                }
+                console.log(res)
+                swal("错误","提取水印失败，请重试","fail")
+            },
+            error:function (res) {
+                swal("错误","数据表B为空，请重试","error")
+
+            }
+        })
+    }
+
+    function getPicBinarySeq(){
+        let dom = document.getElementById("picBinarySeq")
+        dom.value = ""
+        $.ajax({
+            url:"http://localhost:8088/mark/restoreMark",
+            type:"post",
+            data:{
+                W:markSeq.toString()
+            },
+            success:function(res){
+                let s = ""
+                picBinary = res.imageBinary;
+                for (let i = 0; i < picBinary.length; i++) {
+                    s += picBinary[i]
+                    if((i+1)%64 == 0){
+                        s += "\n"
+                    }
+                }
+                dom.value = s;
+                // console.log(picBin)
+            }
+        })
+    }
+
+    function getPic(){
+
+        $.ajax({
+            url:"http://localhost:8088/mark/image",
+            type:"post",
+            data:{
+                W_B:picBinary.toString(),
+            },
+            success:function(res){
+                document.getElementById("markPic").src = "http://localhost:8088/image/restorePic.bmp?"+Math.random()
+
+                console.log(res)
+            },
+            fail:function (res) {
+                swal("错误","生成图片失败，请重试","error")
+
+            }
+        })
+    }
+
+    function getRecord(firmSign){
+        let firmNameDom = document.getElementById("firmNameInput")
+        let dataNameDom = document.getElementById("dataNameInput")
+        let timeDom = document.getElementById("markTime")
+        let tracePicDom = document.getElementById("tracePic")
+
+        $.ajax({
+            url:"http://localhost:8088/markRecord/searchByFirmSign",
+            type:"post",
+            data:{
+                firmSign:firmSign,
+            },
+            success:function(res){
+                tracePicDom.src = "http://localhost:8088/image/tracePic.bmp?"+Math.random()
+                firmNameDom.innerText = res.markRecord[0].firmName;
+                timeDom.innerText = res.markRecord[0].executeTime;
+                dataNameDom.innerText = res.markRecord[0].dataName
+                console.log(res)
+            },
+            fail:function (res) {
+                swal("错误","未找到","error")
+
+            }
+        })
+    }
+
+    $("#pickMarkBtn").click(function () {
+        let p = document.getElementById("ratioInput").value
+        if(p == ""||p==null){
+            swal("错误","请输入子集比例","error")
+            return;
+        }
+        markSeq = []
+        if(p == 1){
+            getMarkByAll()
+            console.log("all")
+        }
+        else
+        {
+            getMarkByPart(p)
+            console.log("part")
+        }
+    })
+
+    $("#generatePicBinaryBtn").click(function () {
+        if(markSeq.length===0){
+            swal("错误","尚未提取水印","error")
+            return
+        }
+        picBinary = []
+        getPicBinarySeq()
+    })
+
+    $("#generatePicBtn").click(function () {
+        if(picBinary.length===0){
+            swal("错误","尚未生成二值序列","error")
+            return
+        }
+        document.getElementById("markPic").src = ""
+        getPic()
+    })
+
+    $("#searchBtn").click(function () {
+        let firmSign = document.getElementById("firmSignInput").value
+        getRecord(firmSign)
+
+    })
+</script>
+
+</body>
+</html>

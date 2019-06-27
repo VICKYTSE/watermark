@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>可追溯的大数据安全与共享</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+
+    <meta charset="UTF-8">
+    <meta name  = "viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 引入bootstrap的css样式文件-->
+    <link rel = "stylesheet" type="text/css" href="./css/bootstrap.min.css">
+
+    <!--引入图标样式-->
+    <link rel="stylesheet" type="text/css" href="./css/all.css">
+
+    <!--animate.css + wow.js-->
+    <link rel="stylesheet" type="text/css" href="./css/animate.css">
+
+    <!--引入自定义的css样式文件-->
+    <link rel = "stylesheet" type="text/css" href="./css/style.css">
+
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css" />
+    <link href="./css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <script src="./js/modernizr.js"></script> <!-- Modernizr -->
+    <script src="./js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/sweetalert.css">
+
+    <style>
+        /* Custom Styles */
+        ul.nav-tabs{
+            width: 140px;
+            margin-top: 20px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+        }
+        ul.nav-tabs li{
+            margin: 0;
+            border-top: 1px solid #ddd;
+        }
+        ul.nav-tabs li:first-child{
+            border-top: none;
+        }
+        ul.nav-tabs li a{
+            margin: 0;
+            padding: 8px 36px;
+            border-radius: 0;
+        }
+        ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover{
+            color: #fff;
+            background: #0088cc;
+            border: 1px solid #0088cc;
+        }
+        ul.nav-tabs li:first-child a{
+            border-radius: 4px 4px 0 0;
+        }
+        ul.nav-tabs li:last-child a{
+            border-radius: 0 0 4px 4px;
+        }
+        ul.nav-tabs.affix{
+            top: 30px; /* Set the top position of pinned element */
+        }
+    </style>
+
+</head>
+<body data-spy="scroll" data-target="#myScrollspy">
+
+<nav class="navbar navbar-expand-lg navbar-light  " style="height: 60px;padding-top: 25px">
+    <div class="container">
+
+        <a class="navbar-brand brand-style"><span style="color: white">可追溯的大数据安全与共享</span></a>
+
+        <button class="navbar-toggler menu-btn-style" type="button" data-toggle="collapse" data-target="#collapseMenu"
+                aria-controls="collapseMenu" aria-expanded="false" aria-label="Toggle Navigation">
+            <span class="navbar-toggler-icon menu-icon-style"></span>
+        </button>
+
+        <div class = "collapse navbar-collapse justify-content-end " id = "collapseMenu">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link menu-style  nav-text" href="originData">原始数据 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active menu-style" href="markProcess">添加水印<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-style" href="markData">共享数据 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-style" href="removeMark">提取水印<span class="sr-only">(current)</span></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<hr>
+<div class="container" style="padding-top: 50px">
+    <div class="row">
+        <div class="col-lg-3" id="myScrollspy">
+            <ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="125">
+                <li class="active"><a href="#section-1">共享信息</a></li>
+                <li><a href="#section-2">水印处理</a></li>
+                <li><a href="#section-3">添加水印</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-9">
+            <h2>
+                <span  class="" id="section-1" style="font-weight: bold">共享方信息</span><br>
+            </h2>
+            <hr>
+
+            <p style="">
+            <div class="row" style="height: 42px!important;" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify;">共享方名称： </span>
+                <input  id="firmName"  placeholder="请输入共享方名称" class="col-lg-6 userInput"  style="color: #333333"/><br>
+            </div>
+            <br>
+            <div class="row" style="height: 42px!important;" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify">共享方简称： </span>
+                <input  id="firmSign" style="color: #333333"  placeholder="2-6个汉字或英文，用于生成水印图片" class="col-lg-6 userInput" />
+            </div>
+            <br>
+            <div class="col-lg-8" style="text-align:end">
+                <button id = "generatePicBtn" value="modify" class=" btn btn-primary btn-lg col-lg-4" style="margin-left: 120px;font-size: 24px" >生成图片</button>
+                <button id = "resetInfoBtn" value="modify" class=" btn btn-default btn-lg col-lg-4" style="margin-left: 50px;font-size: 24px">重置信息</button>
+            </div>
+
+            </p>
+            <hr style="margin-top: 80px;color: white!important;">
+
+            <h2 class="">
+                <span  class="" id="section-2" style="font-weight: bold">水印处理</span><br>
+            </h2>
+            <hr>
+
+            <p style="">
+            <div class="row" style="height: 42px!important;" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify">水印图片：</span>
+                <img id = "markPic" style="width: 256px;height: 64px;border: 0;">
+            </div>
+            <br>
+            <div class="row" style="" >
+                <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify">二值序列：</span>
+                <textarea id="picBinary" rows="16" readonly cols="76" onkeyup="this.value=this.value.replace(/[^\r\n0-9]/g,'');" style="font-size: 8px;color: #333333"></textarea>
+            </div>
+            <br>
+            <div class="col-lg-9" style="text-align:center">
+                <button id = "generateMarkSeqBtn" value="modify" class=" btn btn-primary btn-lg " style="margin-left: 50px;height: 52px;font-size: 24px;width: 410px">生成水印序列</button>
+            </div>
+            </p>
+            <hr style="margin-top: 80px;">
+            <h2 class="">
+                <span  class="" id="section-3" style="font-weight: bold">添加水印</span><br>
+            </h2>
+            <hr>
+            <div style="">
+                <div class="row" style="" >
+                    <span class="col-lg-2" style="margin-top: 5px;text-align-last:justify">水印序列：</span>
+                    <textarea id="markSeq" readonly rows="16" cols="76" onkeyup="this.value=this.value.replace(/[^\r\n0-9]/g,'');" style="font-size: 9px;color: #333333"></textarea>
+                </div>
+                <br>
+                <div class="col-lg-9" style="text-align:center;align-items: center">
+                    <button id = "addMarkBtn" value="modify" class=" btn btn-primary btn-lg " style="margin-left: 50px;height: 52px;font-size: 24px;width: 410px">添加水印</button>
+                </div>
+
+                <br>
+                <div class="col-lg-7" style="text-align:center">
+                </div>
+
+            </div>
+            <br><br><br>
+            <hr>
+        </div>
+    </div>
+</div>
+<style>
+    .markPic[src=""]{
+        opacity: 0;
+    }
+</style>
+<script>
+    let picBin;
+    let markSeq;
+    function getPicBinary(firmIcon){
+        let dom = document.getElementById("picBinary")
+        dom.value = ""
+
+        $.ajax({
+            url:"http://localhost:8088/mark/imageBinary",
+            type:"post",
+            data:{
+                path:firmIcon
+            },
+            success:function(res){
+                let s = ""
+                picBin = res.imageBinary;
+                for (let i = 0; i < picBin.length; i++) {
+                    s += picBin[i]
+                    if((i+1)%64 == 0){
+                        s += "\n"
+                    }
+                }
+                dom.value = s;
+                // console.log(picBin)
+            }
+        })
+
+    }
+
+    function getPic(){
+        $.ajax({
+            url:"http://localhost:8088/mark/createImage",
+            type:"post",
+            data:{
+                firmSign:document.getElementById("firmSign").value
+            },
+            success:function(res){
+                document.getElementById("markPic").src = "http://localhost:8088/image/javaPic.bmp?"+Math.random()
+                getPicBinary(res.firmIcon)
+                console.log(res)
+                console.log(document.getElementById("firmSign").value)
+            }
+        })
+    }
+
+    function getMarkSeq(){
+        $.ajax({
+            url:"http://localhost:8088/mark/getMarkSeq",
+            type:"post",
+            data:{
+                I:picBin.toString()
+            },
+            success:function(res){
+                markSeq = res.markSequence
+                let s = ""
+                for (let i = 0; i < markSeq.length; i++) {
+                    s += markSeq[i]
+                    if((i+1)%64 == 0){
+                        s += "\n"
+                    }
+                }
+                document.getElementById("markSeq").value = s
+
+                console.log(res)
+            },
+            fail:function (res) {
+                console.log(picBin)
+            },
+            complete:function () {
+                // console.log(picBin.toString())
+            }
+        })
+    }
+
+    function addRecord() {
+        $.ajax({
+            url:"http://localhost:8088/markRecord/insertMarkRecord",
+            type:"post",
+            data:{
+                firmName:document.getElementById("firmName").value,
+                firmSign:document.getElementById("firmSign").value
+            },
+            success:function(res){
+                if(res.code == 0)
+                {
+                    swal("成功","添加水印完成","success")
+                }
+                else
+                {
+                    swal("错误","添加水印失败，请重试","error")
+                }
+                console.log(res)
+            },
+            fail:function (res) {
+                swal("错误","添加水印失败，请重试","error")
+            },
+            complete:function () {
+                // console.log(picBin.toString())
+            }
+        })
+    }
+
+    function addMark(){
+        swal({
+            title: "添加水印中",
+            showConfirmButton: false,
+            imageUrl: "./img/loading.gif",
+            showCancelButton: false,
+            timer:300000
+        })
+
+        $.ajax({
+            url:"http://localhost:8088/mark/addMark",
+            type:"post",
+            data:{
+                W:markSeq.toString()
+            },
+            success:function(res){
+                if(res.code == 0)
+                {
+                    addRecord()
+                }
+                else
+                {
+                    swal("错误","添加水印失败，请重试","error")
+                }
+                console.log(res)
+            },
+            fail:function (res) {
+                swal("错误","添加水印失败，请重试","error")
+
+            },
+            complete:function () {
+                // console.log(picBin.toString())
+            }
+        })
+    }
+
+    $("#generatePicBtn").click(function () {
+        document.getElementById("markPic").src = ""
+        let firmName = document.getElementById("firmName").value;
+        let firmSign = document.getElementById("firmSign").value;
+        if(firmName==""||firmSign==""||firmSign==null||firmName==null){
+            swal("错误","请完整填写共享方信息","error")
+            return;
+        }
+        console.log(firmName);
+        console.log(firmSign);
+        getPic()
+    })
+    $("#generateMarkSeqBtn").click(function () {
+        document.getElementById("markSeq").value = ""
+        let bin = document.getElementById("picBinary").value
+        if(bin==null||bin===""){
+            swal("错误","尚未生成二值序列","error")
+            return;
+        }
+        getMarkSeq()
+    })
+    $("#addMarkBtn").click(function () {
+        let bin = document.getElementById("markSeq").value
+        if(bin==null||bin===""){
+            swal("错误","尚未生成水印序列","error")
+            return;
+        }
+        addMark()
+    })
+    $("#resetInfoBtn").click(function () {
+        document.getElementById("firmName").value = ""
+        document.getElementById("firmSign").value = ""
+
+    })
+</script>
+</body>
+</html>

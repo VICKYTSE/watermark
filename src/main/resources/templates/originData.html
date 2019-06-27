@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name  = "viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 引入bootstrap的css样式文件-->
+    <link rel = "stylesheet" type="text/css" href="./css/bootstrap.min.css">
+
+    <!--引入图标样式-->
+    <link rel="stylesheet" type="text/css" href="./css/all.css">
+
+    <!--animate.css + wow.js-->
+    <link rel="stylesheet" type="text/css" href="./css/animate.css">
+
+    <!--引入自定义的css样式文件-->
+    <link rel = "stylesheet" type="text/css" href="./css/style.css">
+
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css" />
+    <link href="./css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <script src="./js/modernizr.js"></script> <!-- Modernizr -->
+    <script src="./js/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/sweetalert.css">
+    <title>可追溯的大数据安全与共享</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light  " style="height: 60px;padding-top: 25px">
+    <div class="container">
+        <!--        <img id="nav-xiaohui" class="img-fluid" src="img/xiaohui.jpg">-->
+        <!-- <a class="brand-style" ><span>城市交通流量大数据系统</span></a> -->
+        <a class="navbar-brand brand-style"><span style="color: white">可追溯的大数据安全与共享</span></a>
+
+        <button class="navbar-toggler menu-btn-style" type="button" data-toggle="collapse" data-target="#collapseMenu"
+                aria-controls="collapseMenu" aria-expanded="false" aria-label="Toggle Navigation">
+            <span class="navbar-toggler-icon menu-icon-style"></span>
+        </button>
+
+        <div class = "collapse navbar-collapse justify-content-end " id = "collapseMenu">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link menu-style active nav-text" href="originData">原始数据 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-style" href="markProcess">添加水印<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-style" href="markData">共享数据 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-style" href="removeMark">提取水印 <span class="sr-only">(current)</span></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<hr>
+<div class="container" style="padding-top: 50px">
+    <div class="row">
+        <h2 class="col-lg-6">数据表名：<span id="tableNameSpan" style="color: #e4606d"></span></h2>
+        <h2 class="col-lg-6" style="text-align-last: end">数据总条数：<span id="dataBulkSpan" style="color: #e4606d"></span></h2>
+    </div>
+
+    <hr style="background-color: #adb5bd;height: 1px;width:100%;border: none;"/>
+
+    <span style="font-weight: bold">数据示例</span>
+    <div id="dataTab" class="table "></div>
+
+    <hr style="margin-top:20px;background-color: #adb5bd;height: 1px;width:100%;border: none;"/>
+    <br/>    <br/>
+
+    <div class="row">
+        <p class="col-lg-4" style="font-weight: bold;font-size: 28px;line-height: 60px"><br/><br/>叫车高峰时段<span id="barTime" style="color: #e4606d"></span><br/>
+            <span id="barDate" style="color: #e4606d"></span>高峰时段订单数为<span id="barCount" style="color: #e4606d"></span><br/>
+            日均订单数为<span id = "barAvg" style="color: #e4606d"></span>
+        </p>
+        <div id = "barChart" class="col-lg-8" style="width: 720px;height: 560px;"></div>
+    </div>
+
+    <hr style="margin-top:10px;background-color: #adb5bd;height: 1px;width:100%;border: none;"/>
+    <br/>    <br/>
+
+    <div class="row">
+        <div id = "pieChart" class="col-lg-8" style="width: 720px;height: 560px;"></div>
+
+        <p class="col-lg-4" style="font-weight: bold;font-size: 28px;line-height: 60px"><br/><br/><span id="15ratio" style="color: #e4606d"></span>订单耗时15分钟内<br/>
+            <span id="30ratio" style="color: #e4606d"></span>订单耗时30分钟内<br/>
+            <span id = "1ratio" style="color: #e4606d"></span>订单耗时超过1小时
+        </p>
+    </div>
+
+    <hr style="margin-top:10px;background-color: #adb5bd;height: 1px;width:100%;border: none;"/>
+    <br/>    <br/>
+
+    <div class="row">
+
+        <p class="col-lg-4" style="font-weight: bold;font-size: 28px;line-height: 60px"><br/><br/><span id="16time" style="color: #e4606d"></span>产生短时订单最多，小于30分钟订单数为<span id="16count" style="color: #e4606d"></span><br/>
+            <span id="30time" style="color: #e4606d"></span>短时订单减少，长时订单增多，耗时大于30分钟订单数为<span id="30count" style="color: #e4606d"></span>
+        </p>
+        <div id = "lineChart" class="col-lg-8" style="width: 720px;height: 560px;"></div>
+
+    </div>
+
+
+</div>
+<!-- 引入js文件，引入的顺序必须为:jQuery, popper, bootstrap -->
+<script type="text/javascript" src = "js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src = "js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/wow.js"></script>
+<script src="js/bootstrap-table.min.js"></script>
+<script src="js/echarts.min.js"></script>
+<script src="js/dark.js"></script>
+</body>
+<script>
+    load()
+    function load() {
+        getDataBulk()
+        getData()
+        renderBarData()
+        renderPieChart()
+        renderLineChart()
+    }
+    function getDataBulk() {
+        $.ajax({
+            url:"http://localhost:8088/orderA/getAllCount",
+            type:"get",
+            success:function(res){
+
+                document.getElementById("tableNameSpan").textContent = "order_20161110"
+                document.getElementById("dataBulkSpan").textContent = res.count
+
+            },
+            fail:function (res) {
+            },
+            complete:function () {
+            }
+        })
+    }
+    function getData() {
+        $('#dataTab').bootstrapTable({
+            ajax:function(request){
+                $.ajax({
+                    url:"http://localhost:8088/orderA/getTenRecord",
+                    type: "get",
+                    success:function (res) {
+                        let list = res.orderList
+                        for (let i =0;i<list.length;i++)
+                        {
+                            delete list[i].h1
+                        }
+                        console.log(list)
+                        request.success({
+                            row : list
+                        });
+                        $("#dataTab").bootstrapTable('load',res.orderList)
+                    },
+                    error:function () {
+                        swal("错误","获取数据失败","fail")
+                    }
+                });
+            },
+            title:"订单数据",
+            // toolbar: "#toolbar",
+            // striped: true, // 是否显示行间隔色
+            uniqueId: "orderId",
+            pageSize: "6",
+            columns: [
+                {
+                field: 'orderId',
+                title: 'orderId',
+                    width:330,
+                    align: 'center',
+                 },
+                {
+                    field: 'startTime',
+                    title: 'startTime',
+                    align: 'center',
+                },
+                {
+                    field: 'endTime',
+                    title: 'endTime',
+                    align: 'center',
+                },
+                {
+                    field: 'startLongitude',
+                    title: 'startLongitude',
+                    align: 'center',
+                },
+                {
+                    field: 'startLatitude',
+                    title: 'startLatitude',
+                    align: 'center',
+                },
+                {
+                    field: 'endLongitude',
+                    title: 'endLongitude',
+                    align: 'center',
+                },
+                {
+                    field: 'endLatitude',
+                    title: 'endLatitude',
+                    align: 'center',
+                },
+
+            ]
+        });
+
+    }
+    function showBarChart(dataStart, dataEnd) {
+        let dom = document.getElementById("barChart");
+        let myChart = echarts.init(dom,"dark");
+        let option = {
+            title : {
+                text: '11月10日成都市滴滴订单数量',
+                subtext: ''
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['开始订单数','结束订单数']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : ['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00',
+                    '12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'],
+                    show:true
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    show:true
+
+                }
+            ],
+            series : [
+                {
+                    name:'开始订单数',
+                    type:'bar',
+                    data:dataStart,
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:'结束订单数',
+                    type:'bar',
+                    data:dataEnd,
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            // {type : 'average', name : '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+        if (option && typeof option == "object") {
+            myChart.setOption(option, true);
+        }
+
+    }
+    function renderBarData() {
+        let domTime = document.getElementById("barTime")
+        // let domDate = document.getElementById("barDate")
+        let domCount = document.getElementById("barCount")
+        let domAvg  = document.getElementById("barAvg")
+
+        let dataStart = []
+        let dataEnd = []
+
+        $.ajax({
+            url:"http://localhost:8088/orderA/getStartHoursCount",
+            type:"get",
+            async:false,
+            success:function(res){
+                dataStart = res.countList
+            },
+            fail:function (res) {
+            },
+            complete:function () {
+            }
+        })
+
+        $.ajax({
+            url:"http://localhost:8088/orderA/getEndHoursCount",
+            type:"get",
+            async:false,
+            success:function(res){
+                dataEnd = res.countList
+            },
+            fail:function (res) {
+            },
+            complete:function () {
+            }
+        })
+
+        showBarChart(dataStart,dataEnd)
+        domTime.textContent = "13:00-14:00"
+        // domDate.textContent = "11月10日"
+        domCount.textContent = "670"
+        domAvg.textContent = '421'
+    }
+    function showPieChart(dataCount){
+        let data = []
+        data[0] = {value:dataCount[0],name:'15分钟内'}
+        data[1] = {value:dataCount[1],name:'15-30分钟'}
+        data[2] = {value:dataCount[2],name:'30-60分钟'}
+        data[3] = {value:dataCount[3],name:'1-2小时'}
+        data[4] = {value:dataCount[4],name:'大于2小时'}
+
+        let dom = document.getElementById("pieChart");
+        let myChart = echarts.init(dom,"dark");
+        let option = {
+            title : {
+                text: '滴滴订单耗时分布统计',
+                subtext: '2016年11月10日成都市',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['15分钟内','15-30分钟','30-60分钟','1-2小时','大于2小时']
+            },
+            series : [
+                {
+                    name: '订单耗时',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:data,
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        if (option && typeof option == "object") {
+            myChart.setOption(option, true);
+        }
+    }
+    function renderPieChart() {
+        let dom15 = document.getElementById("15ratio")
+        let dom30  = document.getElementById("30ratio")
+        let dom1  = document.getElementById("1ratio")
+        let dataCount = []
+        $.ajax({
+            url:"http://localhost:8088/orderA/getDurationCount",
+            type:"get",
+            async:false,
+            success:function(res){
+                dataCount = res.countList
+            },
+            fail:function (res) {
+            },
+            complete:function () {
+            }
+        })
+        showPieChart(dataCount)
+        dom15.textContent = "三分之一"
+        dom30.textContent = "近八成"
+        dom1.textContent = "不到2%"
+    }
+
+    function  showLineChart(dataCount) {
+        let data1 = [];
+        data1[0] = "15分钟内"
+        for(let i=1;i<=dataCount[0].length;i++){
+            data1[i]=(dataCount[0][i-1].toString())
+        }
+        let data2 = [];
+        data2[0] = "15-30分钟"
+        for(let i=1;i<=dataCount[1].length;i++){
+            data2[i]=(dataCount[1][i-1].toString())
+        }
+        let data3 = [];
+        data3[0] = "30-60分钟"
+        for(let i=1;i<=dataCount[2].length;i++){
+            data3[i]=(dataCount[2][i-1].toString())
+        }
+        let data4 = [];
+        data4[0] = "1-2小时"
+        for(let i=1;i<=dataCount[3].length;i++){
+            data4[i]=(dataCount[3][i-1].toString())
+        }
+        let data5 = [];
+        data5[0] = "大于2小时"
+        for(let i=1;i<=dataCount[4].length;i++){
+            data5[i]=(dataCount[4][i-1].toString())
+        }
+
+
+        let dom = document.getElementById("lineChart");
+        let myChart = echarts.init(dom,"dark");
+        let option
+        setTimeout(function () {
+
+            option = {
+                legend: {},
+                tooltip: {
+                    trigger: 'axis',
+                    showContent: false
+                },
+                dataset: {
+                    source: [
+                        ['时间','00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00',
+                            '12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'],
+                        data1,
+                        data2,
+                        data3,
+                        data4,
+                        data5
+                    ]
+                },
+                xAxis: {type: 'category'},
+                yAxis: {gridIndex: 0},
+                grid: {top: '55%'},
+                series: [
+                    {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                    {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                    {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                    {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                    {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                    {
+                        type: 'pie',
+                        id: 'pie',
+                        radius: '30%',
+                        center: ['50%', '25%'],
+                        label: {
+                            formatter: '{b}: {@2012} ({d}%)'
+                        },
+                        encode: {
+                            itemName: '时间',
+                            value: '2012',
+                            tooltip: '2012'
+                        }
+                    }
+                ]
+            };
+
+            myChart.on('updateAxisPointer', function (event) {
+                var xAxisInfo = event.axesInfo[0];
+                if (xAxisInfo) {
+                    var dimension = xAxisInfo.value + 1;
+                    myChart.setOption({
+                        series: {
+                            id: 'pie',
+                            label: {
+                                formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+                            },
+                            encode: {
+                                value: dimension,
+                                tooltip: dimension
+                            }
+                        }
+                    });
+                }
+            });
+
+            myChart.setOption(option);
+
+        });
+        if (option && typeof option == "object") {
+            myChart.setOption(option, true);
+        }
+    }
+
+    function renderLineChart() {
+        let dataCount = [];
+        // $.ajax({
+        //     url:"http://localhost:8088/orderA/getDurationAndHourCount",
+        //     type:"get",
+        //     async:false,
+        //     success:function(res){
+        //         dataCount = res.countList
+        //     },
+        //     fail:function (res) {
+        //     },
+        //     complete:function () {
+        //     }
+        // })
+        dataCount = [
+            [
+                86,
+                61,
+                57,
+                26,
+                36,
+                36,
+                50,
+                130,
+                209,
+                200,
+                156,
+                194,
+                222,
+                208,
+                188,
+                150,
+                148,
+                144,
+                160,
+                196,
+                203,
+                197,
+                155,
+                138
+            ],
+            [
+                76,
+                55,
+                35,
+                26,
+                13,
+                20,
+                38,
+                188,
+                279,
+                279,
+                244,
+                277,
+                260,
+                286,
+                275,
+                290,
+                297,
+                236,
+                284,
+                255,
+                258,
+                252,
+                246,
+                127
+            ],
+            [
+                21,
+                15,
+                7,
+                10,
+                2,
+                5,
+                11,
+                64,
+                113,
+                154,
+                121,
+                87,
+                70,
+                161,
+                155,
+                155,
+                137,
+                189,
+                149,
+                107,
+                80,
+                77,
+                62,
+                20
+            ],
+            [
+                0,
+                2,
+                1,
+                0,
+                1,
+                1,
+                0,
+                6,
+                7,
+                23,
+                18,
+                4,
+                3,
+                14,
+                17,
+                15,
+                14,
+                35,
+                19,
+                4,
+                4,
+                3,
+                0,
+                0
+            ],
+            [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                1,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ]
+        ]
+        showLineChart(dataCount)
+        let dom1 = document.getElementById("16time")
+        dom1.textContent = "08:00"
+        let dom2 = document.getElementById("16count")
+        dom2.textContent = "488"
+        let dom3 = document.getElementById("30time")
+        dom3.textContent = "17:00"
+        let dom4 = document.getElementById("30count")
+        dom4.textContent = "225"
+    }
+</script>
+</html>

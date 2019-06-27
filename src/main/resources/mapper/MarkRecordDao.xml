@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cumt.watermark.dao.MarkRecordDao">
+
+    <select id="searchByFirmSign"   resultType="com.cumt.watermark.entity.MarkRecord" >
+        select *
+        from MarkRecord
+        where firmSign = ${firmSign}
+    </select>
+
+    <insert id="insertMarkRecord" parameterType="com.cumt.watermark.entity.MarkRecord" useGeneratedKeys="true">
+        insert into
+        MarkRecord(dataName,executeTime,firmName,firmSign)
+        VALUES
+        (#{dataName},#{executeTime},#{firmName},#{firmSign})</insert>
+
+</mapper>
