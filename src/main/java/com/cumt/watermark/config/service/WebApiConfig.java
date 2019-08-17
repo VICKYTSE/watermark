@@ -17,8 +17,8 @@ public class WebApiConfig extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
-        registry.addResourceHandler("/image/**").addResourceLocations("file:d:\\");
-        //registry.addResourceHandler("/image/**").addResourceLocations("file:D:\\");
+        registry.addResourceHandler("/image/**").addResourceLocations("file:/08163279/watermark/");
+        //registry.addResourceHandler("/image/**").addResourceLocations("file:/08163279/watermark/");
         registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")

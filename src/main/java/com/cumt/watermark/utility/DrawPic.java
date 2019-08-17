@@ -46,16 +46,16 @@ public class DrawPic {
         g.fillRect(0,0,64,16);
         g.setColor(Color.BLACK);
         if(s.length()==6){
-            g.setFont(new Font("宋体",Font.PLAIN,10));
+            g.setFont(new Font("Fang Song",Font.PLAIN,11));
             g.drawString(s,2,12);
         }
         else if(s.length()==5){
-            g.setFont(new Font("宋体",Font.PLAIN,12));
+            g.setFont(new Font("Fang Song",Font.PLAIN,12));
             g.drawString(s,2,12);
         }
 
         else if(s.length()==4){
-            g.setFont(new Font("宋体",Font.PLAIN,14));
+            g.setFont(new Font("Fang Song",Font.PLAIN,13));
             g.drawString(s,3,13);
         }
         else {

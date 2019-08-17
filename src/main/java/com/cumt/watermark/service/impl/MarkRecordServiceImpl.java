@@ -21,7 +21,7 @@ public class MarkRecordServiceImpl implements MarkRecordService {
     public List<MarkRecord> searchByFirmSign(String firmSign) throws FileNotFoundException {
         List<MarkRecord> markRecord = markRecordDao.searchByFirmSign(firmSign);
         if(markRecord.get(0).getFirmSign()!="" && !markRecord.isEmpty()){
-            File file = DrawPic.createImage("d:\\tracePic.bmp",markRecord.get(0).getFirmSign());
+            File file = DrawPic.createImage("/08163279/watermark/tracePic.bmp",markRecord.get(0).getFirmSign());
         }
         return markRecordDao.searchByFirmSign(firmSign);
     }

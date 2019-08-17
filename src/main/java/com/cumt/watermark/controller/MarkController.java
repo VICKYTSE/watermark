@@ -39,7 +39,7 @@ public class MarkController {
         //String path = ResourceUtils.getURL("classpath:").getPath()+"static/img/javaPic.bmp";
 //        String path = request.getServletContext().getRealPath("d:\\");
 
-        String path = "d:\\";
+        String path = "/08163279/watermark/";
         //String path = "D:\\";
         File file = DrawPic.createImage(path+"javaPic.bmp",firmSign);
 
@@ -73,7 +73,7 @@ public class MarkController {
         //final File file = new File("C:\\Users\\tsevc\\Documents\\workspace\\watermark\\target\\classes\\static\\img\\javaPic.bmp");
         //String path = "/bin/restorePic.bmp";
         //String path = request.getServletContext().getRealPath("d:\\");
-        String path = "d:\\";
+        String path = "/08163279/watermark/";
         //String path = "D:\\";
         File f = us.image(W_B,path+"restorePic.bmp");
         System.out.println(path);
